@@ -1,0 +1,3 @@
+org\openmrs\module\unassignedprescription\web\controller\BasicModuleController.class
+org\openmrs\module\unassignedprescription\web\controller\UnassignedPrescriptionController.class
+org\openmrs\module\unassignedprescription\extension\html\AdminList.class

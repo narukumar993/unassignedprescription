@@ -1,0 +1,2 @@
+org\openmrs\module\unassignedprescription\api\BasicModuleServiceTest.class
+org\openmrs\module\unassignedprescription\api\dao\BasicModuleDaoTest.class

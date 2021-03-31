@@ -1,0 +1,14 @@
+org\openmrs\module\unassignedprescription\api\impl\BasicModuleServiceImpl.class
+org\openmrs\module\unassignedprescription\UnassignedObsDTO.class
+org\openmrs\module\unassignedprescription\UnassignedOb.class
+org\openmrs\module\unassignedprescription\api\UnassignedPrescriptionService.class
+org\openmrs\module\unassignedprescription\api\dao\UnassignedPrescriptionDao.class
+org\openmrs\module\unassignedprescription\BasicModuleActivator.class
+org\openmrs\module\unassignedprescription\api\dao\BasicModuleDao.class
+org\openmrs\module\unassignedprescription\GlobalUtils.class
+org\openmrs\module\unassignedprescription\ServiceResponse.class
+org\openmrs\module\unassignedprescription\api\impl\UnassignedPrescriptionServiceImpl.class
+org\openmrs\module\unassignedprescription\BasicModuleConfig.class
+org\openmrs\module\unassignedprescription\UtilConstants.class
+org\openmrs\module\unassignedprescription\Item.class
+org\openmrs\module\unassignedprescription\api\BasicModuleService.class
