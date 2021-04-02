@@ -10,5 +10,6 @@ org\openmrs\module\unassignedprescription\ServiceResponse.class
 org\openmrs\module\unassignedprescription\api\impl\UnassignedPrescriptionServiceImpl.class
 org\openmrs\module\unassignedprescription\BasicModuleConfig.class
 org\openmrs\module\unassignedprescription\UtilConstants.class
+org\openmrs\module\unassignedprescription\AttachmentDTO.class
 org\openmrs\module\unassignedprescription\Item.class
 org\openmrs\module\unassignedprescription\api\BasicModuleService.class

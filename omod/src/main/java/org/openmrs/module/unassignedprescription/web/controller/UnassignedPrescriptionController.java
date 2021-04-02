@@ -19,8 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.unassignedprescription.ServiceResponse;
 import org.openmrs.module.unassignedprescription.UnassignedObsDTO;
-import org.openmrs.module.unassignedprescription.api.impl.UnassignedPrescriptionServiceImpl;
+import org.openmrs.module.unassignedprescription.api.UnassignedPrescriptionService;
 import org.openmrs.module.webservices.rest.web.RestConstants;
+import org.openmrs.module.webservices.rest.web.v1_0.controller.BaseRestController;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.OpenmrsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +38,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/rest/" + RestConstants.VERSION_1 + "/unassignedprescription")
-public class UnassignedPrescriptionController {
+public class UnassignedPrescriptionController extends BaseRestController {
 	
 	@Autowired
-	public UnassignedPrescriptionServiceImpl unassignedPrescriptionServiceImpl;
+	public UnassignedPrescriptionService unassignedPrescriptionService;
 	
 	@Autowired
 	public ServletContext servletContext;
@@ -53,7 +54,7 @@ public class UnassignedPrescriptionController {
 	
 	@RequestMapping(value = "/getAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<UnassignedObsDTO>> getAllUnassignedPrescriptions() {
-		List<UnassignedObsDTO> allObs = unassignedPrescriptionServiceImpl.getAllObs();
+		List<UnassignedObsDTO> allObs = unassignedPrescriptionService.getAllObs();
 		return new ResponseEntity<List<UnassignedObsDTO>>(allObs, HttpStatus.OK);
 		
 	}
@@ -61,7 +62,7 @@ public class UnassignedPrescriptionController {
 	@RequestMapping(value = "/{locationUuid}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody
 	ResponseEntity<ServiceResponse> getUnassignedPrescriptions(@PathVariable("locationUuid") String locationUuid) {
-		ServiceResponse unassignedPres = unassignedPrescriptionServiceImpl.getObsByLocationUuid(locationUuid);
+		ServiceResponse unassignedPres = unassignedPrescriptionService.getObsByLocationUuid(locationUuid);
 		return new ResponseEntity<ServiceResponse>(unassignedPres, HttpStatus.OK);
 	}
 	
@@ -71,7 +72,17 @@ public class UnassignedPrescriptionController {
 	        @RequestParam("patientUuid") String patientUuid) {
 		System.out.println("unassignedobsid in controller================" + unassignedObsId);
 		System.out.println("patientUuid in controller================" + patientUuid);
-		ServiceResponse assignPres = unassignedPrescriptionServiceImpl.assignPrescriptionById(unassignedObsId, patientUuid);
+		ServiceResponse assignPres = unassignedPrescriptionService.assignPrescriptionById(unassignedObsId, patientUuid);
+		return new ResponseEntity<ServiceResponse>(assignPres, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/demo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody
+	ResponseEntity<ServiceResponse> assignAndAllocatePrescriptions(@RequestParam String patientUuid,
+	        @RequestParam("image") MultipartFile multipartFile) {
+		System.out.println("demo controller ================");
+		System.out.println("controller================");
+		ServiceResponse assignPres = unassignedPrescriptionService.restTemplateDemo(patientUuid, multipartFile);
 		return new ResponseEntity<ServiceResponse>(assignPres, HttpStatus.OK);
 	}
 	
@@ -79,38 +90,10 @@ public class UnassignedPrescriptionController {
 	public @ResponseBody
 	ResponseEntity<ServiceResponse> createdUnassignedPres(@RequestParam String locationUuid, @RequestParam String comment,
 	        @RequestParam("image") MultipartFile multipartFile) {
-		ServiceResponse createUnassignedPres = unassignedPrescriptionServiceImpl.createUnassignedPrescription(locationUuid,
+		ServiceResponse createUnassignedPres = unassignedPrescriptionService.createUnassignedPrescription(locationUuid,
 		    comment, multipartFile);
 		return new ResponseEntity<ServiceResponse>(createUnassignedPres, HttpStatus.OK);
 	}
-	
-	// @RequestMapping(value = "/imagebyte/{imageName}", method = RequestMethod.GET,
-	// produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	// public ResponseEntity<byte[]> getImage(@PathVariable("imageName") String
-	// imageName) throws IOException {
-	// try {
-	//
-	// File fileForDirectory =
-	// OpenmrsUtil.getDirectoryInApplicationDataDirectory(Context.getAdministrationService()
-	// .getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_COMPLEX_OBS_DIR));
-	// System.out.println("image path from where we are getting images " +
-	// fileForDirectory + File.separator
-	// + imageName);
-	// InputStreamReader inputStream = new InputStreamReader(new
-	// FileInputStream(fileForDirectory + File.separator
-	// + imageName));
-	// System.out.println("after input stream ====================");
-	// byte[] media = IOUtils.toByteArray(inputStream);
-	// System.out.println("after media creation ====================");
-	// ResponseEntity<byte[]> responseEntity = new ResponseEntity<byte[]>(media,
-	// HttpStatus.OK);
-	// return responseEntity;
-	// }
-	// catch (Exception exception) {
-	// exception.printStackTrace();
-	// return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
-	// }
-	// }
 	
 	@RequestMapping(value = "/image/{imageName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public void downloadImage(HttpServletRequest request, HttpServletResponse response,

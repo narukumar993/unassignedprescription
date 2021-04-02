@@ -14,6 +14,7 @@ import java.util.UUID;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
+import org.openmrs.module.unassignedprescription.AttachmentDTO;
 import org.openmrs.module.unassignedprescription.GlobalUtils;
 import org.openmrs.module.unassignedprescription.ServiceResponse;
 import org.openmrs.module.unassignedprescription.UnassignedOb;
@@ -24,8 +25,10 @@ import org.openmrs.module.unassignedprescription.api.dao.UnassignedPrescriptionD
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.OpenmrsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -51,7 +54,7 @@ public class UnassignedPrescriptionServiceImpl extends BaseOpenmrsService implem
 			dto.setDateCreated(unassignedOb.getDateCreated());
 			dto.setLocationUuid(unassignedOb.getLocationUuid());
 			String imageName = unassignedOb.getObsImage();
-			//			dto.setObsImage(UtilConstants.IMAGE_API_PATH_LOCAL + imageName);
+			// dto.setObsImage(UtilConstants.IMAGE_API_PATH_LOCAL + imageName);
 			dto.setObsImage(UtilConstants.IMAGE_API_PATH_SERVER + imageName);
 			dto.setPatientUuid(unassignedOb.getPatientUuid());
 			dto.setStatus(unassignedOb.getStatus());
@@ -77,7 +80,7 @@ public class UnassignedPrescriptionServiceImpl extends BaseOpenmrsService implem
 			dto.setDateCreated(unassignedOb.getDateCreated());
 			dto.setLocationUuid(unassignedOb.getLocationUuid());
 			String imageName = unassignedOb.getObsImage();
-			//			dto.setObsImage(UtilConstants.IMAGE_API_PATH_LOCAL + imageName);
+			// dto.setObsImage(UtilConstants.IMAGE_API_PATH_LOCAL + imageName);
 			dto.setObsImage(UtilConstants.IMAGE_API_PATH_SERVER + imageName);
 			dto.setPatientUuid(unassignedOb.getPatientUuid());
 			dto.setStatus(unassignedOb.getStatus());
@@ -104,6 +107,31 @@ public class UnassignedPrescriptionServiceImpl extends BaseOpenmrsService implem
 		} else {
 			return new ServiceResponse(false, UtilConstants.UPDATE_RECORD_FAIL);
 		}
+	}
+	
+	@Override
+	public ServiceResponse restTemplateDemo(String patientUuid, MultipartFile multipartFile) throws APIException {
+		
+		String url = "http://digiprescribe.com:8081/openmrs/ws/rest/v1/attachment";
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Content-Type", "application/json");
+		
+		String imageName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+		
+		AttachmentDTO attachmentDTO = new AttachmentDTO();
+		attachmentDTO.setFile(multipartFile);
+		attachmentDTO.setFileCaption(imageName);
+		attachmentDTO.setPatient(patientUuid);
+		
+		Object object = restTemplate.postForObject(url, attachmentDTO, Object.class);
+		
+		if (!GlobalUtils.isNull(object)) {
+			return new ServiceResponse(true, object);
+		} else {
+			return new ServiceResponse(false, UtilConstants.UPDATE_RECORD_FAIL);
+		}
+		
 	}
 	
 	@Override

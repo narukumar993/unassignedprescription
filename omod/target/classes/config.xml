@@ -1,91 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <module configVersion="1.2">
-	
+
 	<!-- Base Module Properties -->
 	<id>unassignedprescription</id>
 	<name>Basic Module</name>
 	<version>1</version>
 	<package>org.openmrs.module.unassignedprescription</package>
-	<author>Ben Wolfe</author>
+	<author>Narendra Kumar</author>
 	<description>
-			Basic Module. Useful for creating other modules.
+		Basic Module. Useful for creating other modules.
 	</description>
 
-	<activator>org.openmrs.module.unassignedprescription.BasicModuleActivator</activator>
-	
+	<activator>org.openmrs.module.unassignedprescription.BasicModuleActivator
+	</activator>
+
 	<!-- <updateURL>https://modules.openmrs.org/modules/download/unassignedprescription/update.rdf</updateURL> -->
 	<!-- /Base Module Properties -->
-	
+
 	<require_version>1.11.6</require_version>
-	
+
+
+	<require_modules>
+		<require_module version="${webservicesRestVersion}">org.openmrs.module.webservices.rest
+		</require_module>
+	</require_modules>
+
 	<!-- Extensions -->
 	<extension>
 		<point>org.openmrs.admin.list</point>
-		<class>org.openmrs.module.unassignedprescription.extension.html.AdminList</class>
+		<class>org.openmrs.module.unassignedprescription.extension.html.AdminList
+		</class>
 	</extension>
 
 	<aware_of_modules>
 		<aware_of_module>org.openmrs.module.legacyui</aware_of_module>
 	</aware_of_modules>
-	
-	
-	<!-- AOP
-	<advice>
-		<point>org.openmrs.api.FormService</point>
-		<class>org.openmrs.unassignedprescription.advice.DuplicateFormAdvisor</class>
-	</advice>
-	 /AOP -->
-	
-	
-	<!-- Required Privileges 
-	<privilege>
-		<name>Form Entry</name>
-		<description>Allows user to access Form Entry pages/functions</description>
-	</privilege>
-	 /Required Privileges -->
 
 
-	<!-- Required Global Properties 
-	<globalProperty>
-		<property>unassignedprescription.someProperty</property>
-		<defaultValue></defaultValue>
-		<description>
-			A description of the global property goes here.  The description
-			should explain enough for administrators to understand the purpose
-			and possible values for the global property.
-		</description>
-	</globalProperty>
-	/Required Global Properties -->
-	
-	<!--
-	<dwr>
-		<allow>
-			<create creator="new" javascript="DWRFormEntryService">
-				<param name="class" value="org.openmrs.module.unassignedprescription.web.DWRFormEntryService"/>
-				<include method="enterForm"/>
-			</create>
-		</allow>
+	<!-- AOP <advice> <point>org.openmrs.api.FormService</point> <class>org.openmrs.unassignedprescription.advice.DuplicateFormAdvisor</class> 
+		</advice> /AOP -->
 
-		<signatures>
-			<![CDATA[
-			import org.openmrs.unassignedprescription.web.DWRFormEntryService;
-			DWRFormEntryService.enterForm(Integer patientId, Integer formId, boolean useEncounter, List<String> fields);
-			]]>
-		</signatures>	
-	</dwr>
-	-->
-	
+
+	<!-- Required Privileges <privilege> <name>Form Entry</name> <description>Allows 
+		user to access Form Entry pages/functions</description> </privilege> /Required 
+		Privileges -->
+
+
+	<!-- Required Global Properties <globalProperty> <property>unassignedprescription.someProperty</property> 
+		<defaultValue></defaultValue> <description> A description of the global property 
+		goes here. The description should explain enough for administrators to understand 
+		the purpose and possible values for the global property. </description> </globalProperty> 
+		/Required Global Properties -->
+
+	<!-- <dwr> <allow> <create creator="new" javascript="DWRFormEntryService"> 
+		<param name="class" value="org.openmrs.module.unassignedprescription.web.DWRFormEntryService"/> 
+		<include method="enterForm"/> </create> </allow> <signatures> <![CDATA[ import 
+		org.openmrs.unassignedprescription.web.DWRFormEntryService; DWRFormEntryService.enterForm(Integer 
+		patientId, Integer formId, boolean useEncounter, List<String> fields); ]]> 
+		</signatures> </dwr> -->
+
 	<!-- Servlets -->
 	<!-- Accessed through the url /pageContext()/moduleServlet/<moduleId>/<servlet-name> 
-	<servlet>
-		<servlet-name>formDownload</servlet-name>
-		<servlet-class>org.openmrs.unassignedprescription.web.FormDownloadServlet</servlet-class>
-	</servlet>
-	-->
+		<servlet> <servlet-name>formDownload</servlet-name> <servlet-class>org.openmrs.unassignedprescription.web.FormDownloadServlet</servlet-class> 
+		</servlet> -->
 	<!-- /Servlets -->
-	
-	
+
+
 	<!-- Internationalization -->
 	<!-- All message codes should start with unassignedprescription.* -->
 	<messages>
@@ -101,6 +82,6 @@
 		<file>messages_es.properties</file>
 	</messages>
 	<!-- /Internationalization -->
-	
+
 </module>
 

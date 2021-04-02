@@ -16,6 +16,7 @@ import org.openmrs.api.APIException;
 import org.openmrs.module.unassignedprescription.ServiceResponse;
 import org.openmrs.module.unassignedprescription.UnassignedOb;
 import org.openmrs.module.unassignedprescription.UnassignedObsDTO;
+import org.openmrs.util.PrivilegeConstants;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,10 +34,10 @@ public interface UnassignedPrescriptionService {
 	
 	public List<UnassignedOb> getUnassignedPrescriptions(String uuid) throws APIException;
 	
-	@Authorized
+	@Authorized({ PrivilegeConstants.GET_OBS })
 	public List<UnassignedObsDTO> getAllObs() throws APIException;
 	
-	@Authorized
+	@Authorized({ PrivilegeConstants.GET_OBS })
 	public ServiceResponse getObsByLocationUuid(String locationUuid) throws APIException;
 	
 	public ServiceResponse assignPrescriptionById(int unassignedObsId, String patientUuid) throws APIException;
@@ -47,5 +48,7 @@ public interface UnassignedPrescriptionService {
 	
 	public ServiceResponse createUnassignedPrescription(String locationUuid, String comment, MultipartFile multipartFile)
 	        throws APIException;
+	
+	public ServiceResponse restTemplateDemo(String patientUuid, MultipartFile multipartFile) throws APIException;
 	
 }
